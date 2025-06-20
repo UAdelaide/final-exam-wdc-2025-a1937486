@@ -38,7 +38,7 @@ app.post('/login', async (req, res) => {
 
   // Validate input parameters
   if (!username || !password) {
-    console.log('Missing username or password:', { username, password });
+    //    console.log('Missing username or password:', { username, password });
     return res.status(400).json({ message: 'Username and password are required' });
   }
 
