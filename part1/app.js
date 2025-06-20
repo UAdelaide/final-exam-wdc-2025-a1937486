@@ -174,8 +174,8 @@ app.get('/api/dogs/all', async (req, res) => {
 
     res.json(rows);
   } catch (error) {
-    console.error('Error fetching all dogs:', error);
-    res.status(500).json({ message: 'Failed to fetch dogs' });
+    //    console.error('Error fetching all dogs:', error);
+        res.status(500).json({ message: 'Failed to fetch dogs' });
   }
 });
 
