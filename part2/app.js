@@ -186,6 +186,29 @@ const userRoutes = require('./routes/userRoutes');
 app.use('/api/walks', walkRoutes);
 app.use('/api/users', userRoutes);
 
+app.get('/api/dogs/all', async (req, res) => {
+  try {
+    const mysql = require('mysql2/promise');
+    const connection = await mysql.createConnection({
+      host: 'localhost',
+      user: 'root',
+      password: '',
+      database: 'DogWalkService'
+    });
+
+    const [rows] = await connection.execute(
+      'SELECT d.dog_id, d.name, d.size, u.username AS owner_username FROM Dogs d JOIN Users u ON d.owner_id = u.user_id'
+    );
+
+    await connection.end();
+    res.json(rows);
+  } catch (error) {
+    console.error('Error fetching all dogs:', error);
+    res.status(500).json({ message: 'Failed to fetch dogs' });
+  }
+});
+
+
 // Export the app instead of listening here
 module.exports = app;
 
