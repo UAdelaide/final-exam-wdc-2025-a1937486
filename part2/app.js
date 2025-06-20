@@ -190,7 +190,8 @@ app.use('/api/users', userRoutes);
 module.exports = app;
 
 // Start the server manually (if not using bin/www)
-const port = process.env.PORT || 3000;
+
+const port = 8080;
 app.listen(port, () => {
-  console.log(`✅ Server running at http://localhost:${port}`);
+  console.log(`Server running at http://localhost:${port}`);
 });
