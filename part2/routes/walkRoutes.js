@@ -2,6 +2,22 @@ const express = require('express');
 const router = express.Router();
 const db = require('../models/db');
 
+router.get('/dogs', async (req, res) => {
+  try {
+    const [rows] = await db.query(`
+      SELECT
+        d.name AS dog_name,
+        d.size,
+        u.username AS owner_username
+      FROM Dogs d
+      JOIN Users u ON d.owner_id = u.user_id
+    `);
+    res.json(rows);
+  } catch (error) {
+    console.error('Error fetching dogs:', error);
+    res.status(500).json({ error: 'Failed to retrieve dogs' });
+  }
+});
 
 // GET all walk requests (for walkers to view)
 router.get('/', async (req, res) => {
