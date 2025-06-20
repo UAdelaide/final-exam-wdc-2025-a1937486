@@ -111,12 +111,7 @@ const requireOwner = (req, res, next) => {
 };
 
 // Middleware to check if user is walker
-const requireWalker = (req, res, next) => {
-  if (!req.session.userId || req.session.role !== 'walker') {
-    return res.status(403).json({ message: 'Walker access required' });
-  }
-  next();
-};
+// (Removed unused requireWalker middleware)
 
 // Authentication check route
 app.get('/api/auth/check', (req, res) => {
@@ -146,8 +141,8 @@ app.get('/api/dogs', requireAuth, async (req, res) => {
 
     res.json(rows);
   } catch (error) {
-    console.error('Error fetching dogs:', error);
-    res.status(500).json({ message: 'Failed to fetch dogs' });
+    //    console.error('Error fetching dogs:', error);
+        res.status(500).json({ message: 'Failed to fetch dogs' });
   }
 });
 
