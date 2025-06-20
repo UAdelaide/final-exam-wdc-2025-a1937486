@@ -1,45 +1,82 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <title>Dog of the Day</title>
+  <meta charset="UTF-8">
+  <title>DOG OF THE DAY!!!</title>
   <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
   <style>
     body {
-      background-color: yellow;
-      color: red;
-      font-family: 'Comic Sans MS', cursive, sans-serif;
+      font-family: 'Papyrus', fantasy;
+      font-size: 12px;
       text-align: center;
+      background-color: red;
+      color: lime;
     }
+
+    /* 页面闪烁 */
+    @keyframes flashBackground {
+      0% { background-color: red; }
+      25% { background-color: yellow; }
+      50% { background-color: magenta; }
+      75% { background-color: lime; }
+      100% { background-color: red; }
+    }
+
+    body {
+      animation: flashBackground 1s infinite;
+    }
+
+    h1 {
+      font-size: 36px;
+      text-shadow: 3px 3px cyan;
+    }
+
     .small-button {
-      padding: 2px;
-      font-size: 10px;
-      background-color: lime;
+      font-size: 8px;
+      padding: 1px 4px;
+      background-color: cyan;
+      color: black;
+      border: 2px dashed black;
+      cursor: pointer;
     }
+
     .dog-image {
-      width: 100px;
-      height: 100px;
-      border: 10px dashed magenta;
-    }
-    .text-info {
+      width: 150px;
+      height: 150px;
+      border: 5px dotted orange;
       margin-top: 20px;
-      font-weight: bold;
-      font-size: 18px;
+      animation: spin 2s linear infinite;
+    }
+
+    @keyframes spin {
+      0% { transform: rotate(0deg); }
+      100% { transform: rotate(360deg); }
+    }
+
+    .info {
+      margin-top: 30px;
+      font-size: 10px;
       color: blue;
+      background-color: white;
+      padding: 10px;
+      border: 4px ridge purple;
+      box-shadow: 5px 5px 20px orange;
     }
   </style>
 </head>
 <body>
   <div id="app">
-    <h1>DOG OF THE DAY!!!</h1>
-    <button class="small-button" @click="fetchDogImage">CLICK FOR DOG</button>
-    <br><br>
-    <img v-if="dogImage" :src="dogImage" class="dog-image">
-    <div class="text-info" v-if="dogImage">
-      NAME: {{ dogName }}<br>
-      BREED: {{ dogBreed }}<br>
-      AGE: {{ dogAge }}<br>
-      ACTIVITY: {{ dogActivity }}
+    <h1>✨ DOG OF THE DAY ✨</h1>
+    <button class="small-button" @click="fetchDogImage">SEE DOG PICTURE!!!</button>
+
+    <div v-if="dogImage">
+      <img :src="dogImage" class="dog-image">
+      <div class="info">
+        🐶 NAME: {{ dogName }}<br>
+        🐕 BREED: {{ dogBreed }}<br>
+        🎂 AGE: {{ dogAge }}<br>
+        🎾 ACTIVITY: {{ dogActivity }}
+      </div>
     </div>
   </div>
 
@@ -63,16 +100,16 @@
             const data = await response.json();
             this.dogImage = data.message;
 
-            const names = ['Buddy', 'Max', 'Bella', 'Charlie', 'Lucy', 'Cooper', 'Luna', 'Rocky'];
-            const breeds = ['Golden Retriever', 'Labrador', 'German Shepherd', 'Bulldog', 'Poodle', 'Beagle', 'Rottweiler'];
-            const activities = ['Playing fetch', 'Swimming', 'Running in the park', 'Chasing squirrels', 'Playing with toys'];
+            const names = ['Bingo', 'Spike', 'Nina', 'Rover', 'Zuzu', 'Fido', 'Doggo', 'Fluffy'];
+            const breeds = ['Chihuahua', 'Pitbull', 'Shiba Inu', 'Dachshund', 'Boxer', 'Corgi', 'Akita'];
+            const activities = ['Digging holes', 'Barking at leaves', 'Spinning', 'Rolling in mud', 'Running in circles'];
 
             this.dogName = names[Math.floor(Math.random() * names.length)];
             this.dogBreed = breeds[Math.floor(Math.random() * breeds.length)] + ' Mix';
-            this.dogAge = Math.floor(Math.random() * 10 + 1) + ' years old';
+            this.dogAge = Math.floor(Math.random() * 15 + 1) + ' years old';
             this.dogActivity = activities[Math.floor(Math.random() * activities.length)];
-          } catch (error) {
-            console.error('Error fetching dog image:', error);
+          } catch (err) {
+            console.error('Error fetching dog:', err);
           }
         }
       }
