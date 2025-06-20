@@ -189,9 +189,3 @@ app.use('/api/users', userRoutes);
 // Export the app instead of listening here
 module.exports = app;
 
-// Start the server manually (if not using bin/www)
-
-const port = 8080;
-app.listen(port, () => {
-  console.log(`Server running at http://localhost:${port}`);
-});
