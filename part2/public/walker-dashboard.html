@@ -1,91 +1,106 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <title>Walker Dashboard - Dog Walking Service</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta charset="UTF-8">
+  <title>Walker Portal - DogGo</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
   <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
 </head>
 <body class="bg-light">
-  <div id="app" class="container py-4">
-    <h1 class="mb-4 text-success">Walker Dashboard</h1>
+  <div id="walkerApp" class="container py-4">
+    <header class="d-flex justify-content-between align-items-center mb-4">
+      <h2 class="text-success">Walker Panel</h2>
+      <div>
+        <span class="me-3">Hi, <strong>{{ state.walkerName }}</strong></span>
+        <button @click="logOut" class="btn btn-outline-secondary btn-sm">Log Out</button>
+      </div>
+    </header>
 
-    <!-- Alert messages -->
-    <div v-if="message" class="alert alert-info">{{ message }}</div>
-    <div v-if="error" class="alert alert-danger">{{ error }}</div>
+    <div v-if="state.notice" class="alert alert-success">{{ state.notice }}</div>
+    <div v-if="state.warning" class="alert alert-danger">{{ state.warning }}</div>
 
-    <!-- Walk requests list -->
-    <div v-if="walks.length > 0" class="row">
-      <div class="col-md-6 mb-4" v-for="walk in walks" :key="walk.request_id">
+    <section class="row" v-if="state.requests.length">
+      <div class="col-md-6 mb-4" v-for="item in state.requests" :key="item.request_id">
         <div class="card">
           <div class="card-body">
-            <h5 class="card-title">Walk for {{ walk.dog_name }} ({{ walk.size }})</h5>
+            <h6 class="card-title">Dog Walk - {{ item.dog_name }} ({{ item.size }})</h6>
             <p class="card-text">
-              <strong>Date:</strong> {{ new Date(walk.requested_time).toLocaleString() }}<br>
-              <strong>Duration:</strong> {{ walk.duration_minutes }} minutes<br>
-              <strong>Location:</strong> {{ walk.location }}<br>
-              <strong>Owner:</strong> {{ walk.owner_name }}
+              🗓 {{ new Date(item.requested_time).toLocaleString() }}<br>
+              ⏱ {{ item.duration_minutes }} mins<br>
+              📍 {{ item.location }}<br>
+              👤 Owner: {{ item.owner_name }}
             </p>
-            <button type=button class="btn btn-outline-success" @click="applyToWalk(walk.request_id)">Apply</button>
+            <button class="btn btn-outline-primary" @click="sendApplication(item.request_id)">Apply Now</button>
           </div>
         </div>
       </div>
-    </div>
-    <p v-else>No available walk requests at the moment.</p>
+    </section>
+    <p v-else class="text-muted">There are no active walk listings right now.</p>
   </div>
 
   <script>
-    const { createApp, ref, onMounted } = Vue;
+    const { createApp, reactive } = Vue;
 
     createApp({
       setup() {
-        const walks = ref([]);
-        const message = ref('');
-        const error = ref('');
-        const user = 3;
-
-        async function loadWalkRequests() {
-          try {
-            const res = await fetch('/api/walks');
-            if (!res.ok) throw new Error('Failed to load walk requests');
-            walks.value = await res.json();
-          } catch (err) {
-            error.value = err.message;
-          }
-        }
-
-        async function applyToWalk(requestId) {
-          try {
-            const res = await fetch(`/api/walks/${requestId}/apply`, {
-              method: 'POST',
-              headers: { 'Content-Type': 'application/json' },
-              body: JSON.stringify({ walker_id: user })
-            });
-            const result = await res.json();
-
-            if (!res.ok) throw new Error(result.error || 'Application failed');
-            message.value = result.message;
-            error.value = '';
-            await loadWalkRequests();
-          } catch (err) {
-            error.value = err.message;
-            message.value = '';
-          }
-        }
-
-        onMounted(() => {
-          loadWalkRequests();
+        const state = reactive({
+          walkerName: '',
+          requests: [],
+          notice: '',
+          warning: ''
         });
 
-        return {
-          walks,
-          message,
-          error,
-          applyToWalk
+        const logOut = async () => {
+          await fetch('/logout', { method: 'POST' });
+          location.href = '/';
         };
+
+        const verifyUser = async () => {
+          const res = await fetch('/api/auth/check');
+          if (!res.ok) return location.href = '/';
+          const user = await res.json();
+          if (user.role !== 'walker') {
+            location.href = user.role === 'owner' ? '/owner-dashboard.html' : '/';
+          }
+          state.walkerName = user.username;
+        };
+
+        const fetchOpenWalks = async () => {
+          try {
+            const res = await fetch('/api/walks');
+            if (!res.ok) throw new Error('Unable to load walks');
+            state.requests = await res.json();
+          } catch (err) {
+            state.warning = err.message;
+          }
+        };
+
+        const sendApplication = async (reqId) => {
+          try {
+            const userRes = await fetch('/api/users/me');
+            const user = await userRes.json();
+            const applyRes = await fetch(`/api/walks/${reqId}/apply`, {
+              method: 'POST',
+              headers: { 'Content-Type': 'application/json' },
+              body: JSON.stringify({ walker_id: user.userId })
+            });
+            const result = await applyRes.json();
+            if (!applyRes.ok) throw new Error(result.error || 'Failed');
+            state.notice = result.message;
+            state.warning = '';
+            fetchOpenWalks();
+          } catch (e) {
+            state.notice = '';
+            state.warning = e.message;
+          }
+        };
+
+        verifyUser().then(fetchOpenWalks);
+
+        return { state, sendApplication, logOut };
       }
-    }).mount('#app');
+    }).mount('#walkerApp');
   </script>
 
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
