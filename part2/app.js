@@ -62,6 +62,7 @@ app.post('/login', async (req, res) => {
     req.session.username = user.username;
     req.session.role = user.role;
 
+    // Return success response with user role
     res.json({
       success: true,
       role: user.role,
