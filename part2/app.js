@@ -188,7 +188,6 @@ app.use('/api/users', userRoutes);
 
 app.get('/api/dogs/all', async (req, res) => {
   try {
-    const mysql = require('mysql2/promise');
     const connection = await mysql.createConnection({
       host: 'localhost',
       user: 'root',
