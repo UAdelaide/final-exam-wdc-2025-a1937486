@@ -86,4 +86,7 @@ app.post('/logout', (req, res) => {
 
 // Middleware for auth
 const requireAuth = (req, res, next) => {
-  if (!req.session.use
+  if (!req.session.userId) {
+    return res.status(401).json({ message: 'Unauthorized' });
+  }
+  next();
