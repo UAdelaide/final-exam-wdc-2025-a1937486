@@ -103,12 +103,7 @@ const requireAuth = (req, res, next) => {
 };
 
 // Middleware to check if user is owner
-const requireOwner = (req, res, next) => {
-  if (!req.session.userId || req.session.role !== 'owner') {
-    return res.status(403).json({ message: 'Owner access required' });
-  }
-  next();
-};
+// (Removed unused requireOwner middleware)
 
 // Middleware to check if user is walker
 // (Removed unused requireWalker middleware)
