@@ -254,28 +254,7 @@
           const breeds = ['labrador', 'poodle', 'beagle', 'boxer', 'shiba'];
           const container = document.getElementById('dogs-container');
           container.innerHTML = '';
-          for (const breed of breeds) {
-            const res = await fetch(`https://dog.ceo/api/breed/${breed}/images/random`);
-            const data = await res.json();
-            const dogImage = data.message;
-
-            const card = document.createElement('div');
-            card.className = 'col-md-4';
-            card.innerHTML = `
-              <div class="dog-card">
-                <img src="${dogImage}" class="dog-image" alt="${breed}">
-                <div class="dog-info">
-                  <div class="dog-name">${breed}</div>
-                  <div class="dog-details">Size: Unknown</div>
-                  <div class="dog-details">Owner: N/A</div>
-                </div>
-              </div>
-            `;
-            container.appendChild(card);
-          }
-
-          return;
-      }
+          
 
         // Create dog cards
         for (const dog of dogs) {
