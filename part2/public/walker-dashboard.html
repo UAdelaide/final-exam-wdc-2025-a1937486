@@ -9,7 +9,6 @@
 </head>
 <body class="bg-light">
   <div id="app" class="container py-4">
-    <!-- Header with user info and logout -->
     <div class="d-flex justify-content-between align-items-center mb-4">
       <h1 class="text-success">Walker Dashboard</h1>
       <div>
@@ -18,11 +17,11 @@
       </div>
     </div>
 
-    <!-- Alert messages -->
+
     <div v-if="message" class="alert alert-info">{{ message }}</div>
     <div v-if="error" class="alert alert-danger">{{ error }}</div>
 
-    <!-- Walk requests list -->
+
     <div v-if="walks.length > 0" class="row">
       <div class="col-md-6 mb-4" v-for="walk in walks" :key="walk.request_id">
         <div class="card">
@@ -53,7 +52,7 @@
         const username = ref('');
         const userId = ref(null);
 
-     
+
         async function checkAuth() {
           try {
             const res = await fetch('/api/auth/check');
@@ -120,7 +119,6 @@
           }
         }
 
-        // Logout function
         async function logout() {
           try {
             await fetch('/logout', { method: 'POST' });
