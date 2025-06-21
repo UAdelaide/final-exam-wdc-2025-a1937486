@@ -48,7 +48,7 @@ app.listen(port, () => {
 
 
 
-// /api/dogs route
+
 app.get("/api/dogs", async (req, res) => {
   try {
     const connection = await mysql.createConnection(dbConfig);
@@ -66,7 +66,7 @@ app.get("/api/dogs", async (req, res) => {
 
 
 
-// /api/walkrequests/open route
+
 app.get("/api/walkrequests/open", async (req, res) => {
   try {
     const connection = await mysql.createConnection(dbConfig);
@@ -84,7 +84,7 @@ app.get("/api/walkrequests/open", async (req, res) => {
 
 
 
-// /api/walkers/summary route
+
 app.get("/api/walkers/summary", async (req, res) => {
   try {
     const connection = await mysql.createConnection(dbConfig);
