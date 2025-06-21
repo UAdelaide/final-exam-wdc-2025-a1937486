@@ -241,7 +241,7 @@
       }
     }
 
-    // Function to load and display all dogs
+    
     async function loadDogs() {
       try {
         const response = await fetch('/api/dogs/all');
@@ -254,12 +254,11 @@
           const breeds = ['labrador', 'poodle', 'beagle', 'boxer', 'shiba'];
           const container = document.getElementById('dogs-container');
           container.innerHTML = '';
-          // You may want to show a message or placeholder here for no dogs.
           return;
         }
 
 
-        // design many information about dogs
+         // design many information about dogs
         for (const dog of dogs) {
           const dogImage = await fetchRandomDogImage();
 
