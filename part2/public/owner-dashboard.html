@@ -110,7 +110,7 @@
             }
             username.value = user.username;
           } catch (err) {
-            
+
             window.location.href = '/';
           }
         }
@@ -160,7 +160,6 @@
           }
         }
 
-        // Logout function
         async function logout() {
           try {
             await fetch('/logout', { method: 'POST' });
