@@ -71,7 +71,7 @@
             username.value = user.username;
             userId.value = user.userId;
           } catch (err) {
-            // Error checking auth, redirect to login
+            
             window.location.href = '/';
           }
         }
@@ -86,7 +86,7 @@
           }
         }
 
-        // Get current user information
+
         async function getCurrentUser() {
           try {
             const res = await fetch('/api/users/me');
