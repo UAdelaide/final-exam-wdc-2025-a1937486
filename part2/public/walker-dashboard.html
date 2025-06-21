@@ -53,25 +53,25 @@
         const username = ref('');
         const userId = ref(null);
 
-        // Check authentication on page load
+     
         async function checkAuth() {
           try {
             const res = await fetch('/api/auth/check');
             if (!res.ok) {
-              // Not authenticated, redirect to login
+
               window.location.href = '/';
               return;
             }
             const user = await res.json();
             if (user.role !== 'walker') {
-              // Not a walker, redirect to appropriate dashboard
+
               window.location.href = user.role === 'owner' ? '/owner-dashboard.html' : '/';
               return;
             }
             username.value = user.username;
             userId.value = user.userId;
           } catch (err) {
-            
+
             window.location.href = '/';
           }
         }
