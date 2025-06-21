@@ -104,13 +104,13 @@
             }
             const user = await res.json();
             if (user.role !== 'owner') {
-              
+
               window.location.href = user.role === 'walker' ? '/walker-dashboard.html' : '/';
               return;
             }
             username.value = user.username;
           } catch (err) {
-            // Error checking auth, redirect to login
+            
             window.location.href = '/';
           }
         }
