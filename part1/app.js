@@ -17,7 +17,7 @@ async function initializeDatabase() {
     const connection = await mysql.createConnection(dbConfig);
     console.log("Connected to the database.");
 
-    // Read and execute dogwalks.sql
+
     const sqlSchema = fs.readFileSync("dogwalks.sql").toString();
     const schemaStatements = sqlSchema.split(";").filter(s => s.trim().length > 0);
     for (const statement of schemaStatements) {
@@ -25,7 +25,6 @@ async function initializeDatabase() {
     }
     console.log("Database schema initialized.");
 
-    // Read and execute insert_data.sql
     const sqlData = fs.readFileSync("insert_data.sql").toString();
     const dataStatements = sqlData.split(";").filter(s => s.trim().length > 0);
     for (const statement of dataStatements) {
@@ -39,7 +38,7 @@ async function initializeDatabase() {
   }
 }
 
-// Initialize database on startup
+
 initializeDatabase();
 
 app.listen(port, () => {
