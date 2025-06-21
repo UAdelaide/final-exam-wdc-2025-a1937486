@@ -255,7 +255,7 @@
           const container = document.getElementById('dogs-container');
           container.innerHTML = '';
           for (const breed of breeds) {
-    const res = await fetch(`https://dog.ceo/api/breed/${breed}/images/random`);
+            const res = await fetch(`https://dog.ceo/api/breed/${breed}/images/random`);
     const data = await res.json();
     const dogImage = data.message;
 
