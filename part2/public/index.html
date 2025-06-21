@@ -277,7 +277,25 @@
           return;
       }
 
-        
+        // Create dog cards
+        for (const dog of dogs) {
+          const dogImage = await fetchRandomDogImage();
+
+          const dogCard = document.createElement('div');
+          dogCard.className = 'col-md-6 col-lg-4';
+          dogCard.innerHTML = `
+            <div class="dog-card">
+              <img src="${dogImage}" alt="${dog.name}" class="dog-image" loading="lazy">
+              <div class="dog-info">
+                <div class="dog-name">${dog.name}</div>
+                <div class="dog-details"><strong>Size:</strong> ${dog.size}</div>
+                <div class="dog-details"><strong>Owner:</strong> ${dog.owner_username}</div>
+              </div>
+            </div>
+          `;
+
+          container.appendChild(dogCard);
+        }
       } catch (error) {
         console.error('Error loading dogs:', error);
         const container = document.getElementById('dogs-container');
